@@ -56,16 +56,74 @@
 
 package com.wydrgn.leetcode.editor.cn;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class No6ZigzagConversion {
     public static void main(String[] args) {
         Solution solution = new No6ZigzagConversion().new Solution();
+        String result = solution.convert("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4);
+        System.out.println(result);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        //通过一个标记 循环将字符先正序再倒序再正序的方式插入numRows个数组中
         public String convert(String s, int numRows) {
-            return null;
+            if (numRows == 1) {
+                return s;
+            }
+            List<StringBuilder> l = new ArrayList<>();
+            for (int i = 0; i < numRows; i++) {
+                l.add(new StringBuilder());
+            }
+            int index = 0;// list下标
+            int flag = -1;// 循环flag
+            char[] chars = s.toCharArray();
+            for (char c : s.toCharArray()) {
+                l.get(index).append(c);
+                if (index == 0 || index == numRows - 1) {//第一组和最后一组 反转flag
+                    flag = -flag;
+                }
+                index += flag;
+            }
+            return l.stream().map(StringBuilder::toString).collect(Collectors.joining());
         }
+        // my shit code
+        /*public String convert(String s, int numRows) {
+            //输入：s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", numRows = 4
+            //numRows-1 + numRows-2
+            //输出："PINALSIGYAHRPI"
+            //解释：
+            //A     G     M     S     Y    0  6  12 18 24
+            //B   F H   L N   R T   X Z    1  5  7  11 13 17 19 23 25
+            //C E   I  K  O  Q  U  W       2  4  8  10 14 16 20 22
+            //D     J     P     V          3  9  15 21
+
+            //A      I      Q      Y       0  8  16  24
+            //B    H J    P R    X Z       1  7  9   15 17 23 25
+            //C   G  K   O  S   W          2  6  10  14 18 22
+            //D  F   L  N   T  V           3  5  11  13 19 21
+            //E      M      U              4     12  20
+            if (numRows == 1) {
+                return s;
+            }
+            StringBuilder sb = new StringBuilder();
+            int spaceNum = 2 * numRows - 3;
+            for (int i = 0; i < numRows; i++) {
+                int j = i;
+                while (j < s.length()) {
+                    sb.append(s.charAt(j));
+                    if (j % (spaceNum + 1) == 0 || j % (spaceNum + 1) == numRows - 1) {//第一行与最后一行
+                        j += spaceNum + 1;
+                    } else {
+
+                    }
+                }
+            }
+            return null;
+        }*/
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
