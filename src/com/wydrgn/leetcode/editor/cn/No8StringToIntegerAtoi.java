@@ -1,4 +1,4 @@
-  //请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+//请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
 //
 // 函数 myAtoi(string s) 的算法如下：
 //
@@ -110,17 +110,54 @@
 // Related Topics 字符串 👍 1196 👎 0
 
 
-  package com.wydrgn.leetcode.editor.cn;
-  public class No8StringToIntegerAtoi {
-      public static void main(String[] args) {
-           Solution solution = new No8StringToIntegerAtoi().new Solution();
-      }
-      //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int myAtoi(String s) {
-        return 0;
+package com.wydrgn.leetcode.editor.cn;
+
+public class No8StringToIntegerAtoi {
+    public static void main(String[] args) {
+        Solution solution = new No8StringToIntegerAtoi().new Solution();
+        System.out.println(solution.myAtoi("2147483646"));
     }
-}
+
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public int myAtoi(String s) {
+            int index = 0;
+            // 处理空格
+            while (index < s.length() && s.charAt(index) == ' ') {
+                index++;
+            }
+            if (index == s.length()) {
+                return 0;
+            }
+            // 处理 + - 符号
+            int flag = 1;
+            if (s.charAt(index) == '+') {
+                index++;
+            } else if (s.charAt(index) == '-') {
+                flag = -flag;
+                index++;
+            }
+            int res = 0;
+            while (index < s.length()) {
+                if (!(s.charAt(index) >= '0' && s.charAt(index) <= '9')) {
+                    break;
+                }
+                // 注 这里要-'0' 因为char类型比较的是acs码  '0' = 48
+                if (flag == 1) { //2147483647
+                    if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && (s.charAt(index) - '0') > Integer.MAX_VALUE % 10)) {
+                        return Integer.MAX_VALUE;
+                    }
+                } else {// -2147483648
+                    if (flag * res < Integer.MIN_VALUE / 10 || (flag * res == Integer.MIN_VALUE / 10 && flag * (s.charAt(index) - '0') < Integer.MIN_VALUE % 10)) {
+                        return Integer.MIN_VALUE;
+                    }
+                }
+                res = res * 10 + (s.charAt(index) - '0');
+                index++;
+            }
+            return flag * res;
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
-  }
+}
