@@ -72,13 +72,22 @@ public class No10RegularExpressionMatching {
     class Solution {
         public boolean isMatch(String s, String p) {
             // 太难了我不写了 the f word
+            int sLength = s.length();
+            int pLength = p.length();
+            boolean[][] f = new boolean[sLength + 1][pLength + 1];
+            for (int i = 0;i<sLength;i++){
+                for (int j = 0;j<pLength;j++){
 
+                }
+            }
             return false;
         }
 
         public boolean matches(String s, String p, int i, int j) {
-
-            return false;
+            if (p.charAt(j) == '.') {
+                return true;
+            }
+            return s.charAt(i) == p.charAt(j);
         }
     }
 
