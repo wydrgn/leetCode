@@ -65,29 +65,46 @@ package com.wydrgn.leetcode.editor.cn;
 public class No10RegularExpressionMatching {
     public static void main(String[] args) {
         Solution solution = new No10RegularExpressionMatching().new Solution();
+        solution.isMatch("aab", "c*a*b");
     }
 
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isMatch(String s, String p) {
-            // 太难了我不写了 the f word
+            // 练习题
+            // https://alchemist-al.com/algorithms/regular-expression-matching
             int sLength = s.length();
             int pLength = p.length();
             boolean[][] f = new boolean[sLength + 1][pLength + 1];
-            for (int i = 0;i<sLength;i++){
-                for (int j = 0;j<pLength;j++){
 
+            // 特殊情况
+            f[0][0] = true;
+            for (int i = 0; i <= sLength; i++) {
+                for (int j = 1; j <= pLength; j++) {
+                    if (p.charAt(j - 1) == '*') {
+                        f[i][j] = f[i][j - 2];// 因为*号一定只会从第二位元素开始,即j=2 这里不会有问题
+                        if (matches(s, p, i, j - 1)) { // 如果match '*'前一位字母 则说明有可能符合 X*
+                            f[i][j] = f[i][j] || f[i - 1][j]; // 比较前j-1位的p与s true 则当前也为true 因为*可表示多个或一个字母X
+                        }
+                    } else {
+                        if (matches(s, p, i, j)) {
+                            f[i][j] = f[i - 1][j - 1];
+                        }
+                    }
                 }
             }
-            return false;
+            return f[sLength][pLength];
         }
 
         public boolean matches(String s, String p, int i, int j) {
-            if (p.charAt(j) == '.') {
+            if (i == 0) {
+                return false;
+            }
+            if (p.charAt(j - 1) == '.') {
                 return true;
             }
-            return s.charAt(i) == p.charAt(j);
+            return s.charAt(i - 1) == p.charAt(j - 1);
         }
     }
 
