@@ -48,8 +48,7 @@ package com.wydrgn.leetcode.editor.cn;
 public class No7ReverseInteger {
     public static void main(String[] args) {
         Solution solution = new No7ReverseInteger().new Solution();
-        System.out.println(solution.reverse(123456));
-
+        System.out.println(solution.reverse(-123));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)

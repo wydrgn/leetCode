@@ -72,7 +72,12 @@ public class No5LongestPalindromicSubstring {
          * 动态规划
          * 时间复杂度 O(n^2)
          * 空间复杂度 O(n^2)
-         *
+         * "xabba"
+         * [0][0]    [0][1]    [0][2]    [0][3]    [0][4]
+         * [1][0]    [1][1]    [1][2]    [1][3]    [1][4]
+         * [2][0]    [2][1]    [2][2]    [2][3]    [2][4]
+         * [3][0]    [3][1]    [3][2]    [3][3]    [3][4]
+         * [4][0]    [4][1]    [4][2]    [4][3]    [4][4]
          * @param s
          * @return
          */
@@ -84,7 +89,7 @@ public class No5LongestPalindromicSubstring {
             int length = s.length();
             // 最长回文长度
             int maxlength = 1; // 单个字符也算是回文
-            // 回文启示下标
+            // 回文起始下标
             int begin = 0;
             // dp[i][j]表示 s.substring(i,j+1)是否为回文 j+1 aka begin+maxlength aka i+(j-i+1) aka j+1
             boolean[][] dp = new boolean[length][length];
@@ -100,8 +105,14 @@ public class No5LongestPalindromicSubstring {
                         break;
                     }
                     // 注 我发现动态规划必须满足一定的套娃和可拆解 比如下条件
-                    // 满足条件 dp[i][j] = (s[i]==s[j]) && ( j-i <3 or dp[i+1][j-1])
-                    dp[i][j] = charArray[i] == charArray[j] && (j - i < 3 || dp[i + 1][j - 1]); // j-i<3 由 (j-1) - (i+1) +1 < 2 引申出,即当前子回文len长度小于2
+                    /**
+                     * 满足条件 dp[i][j] = (s[i]==s[j]) && ( j-i <3 or dp[i+1][j-1])
+                     * s[i]==s[j] 即 首尾字符一致
+                     *  j-i<3 由 (j-1) - (i+1) +1 < 2 引申出,即当前子回文len长度小于2
+                     *  j-i <3 即 字符串长度小于等于3 Z（因为当字符为3时，已知满足首尾字符一致， 必定是回文）
+                     *  dp[i+1][j-1] 即 除首尾的字符串
+                     */
+                    dp[i][j] = charArray[i] == charArray[j] && (j - i < 3 || dp[i + 1][j - 1]);
                     // 只要 dp[i][L] == true 成立，就表示子串 s[i..L] 是回文，此时记录回文长度和起始位置
                     if (dp[i][j] && len > maxlength) {
                         maxlength = len;
